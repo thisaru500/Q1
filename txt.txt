@@ -1,0 +1,214 @@
+create database name;
+
+create table subject(
+	SSID int primary key
+	);
+
+delete from employee where emp_id=1;
+
+create table class(
+	SSID int,
+	foregin key(SSID) references subject(SSID)
+	ON Delete cascade
+	ON Update cascade
+	);
+
+*salary -> datatype
+salary decimal(10,2),
+
+*sex(listbox)->datatype
+sex ENum('male','female'),
+
+*change data type*
+alter table marks
+    modify SSID varchar(10);
+
+load data local infile '/path/txt.txt' into table pet;
+lines terminated by '\r\n';
+
+insert into tablename values('value1','yyyy-mm-dd');
+
+select host,user from mysql.user;
+
+create user 'MA01'@'localhost' identified by 'password';
+
+grant insert,update on database.table to 'MA01'@'localhost';
+
+revoke all privilages, grant option from 'MA01'@'localhost';
+
+drop user 'MA01'@'localhost';
+
+update tablename
+	set columname=value
+	where condition;
+
+delete from tablename
+	where condition;
+
+alter table tablename
+	add column columnname;
+
+create view tablename as
+	select
+		s.usn,
+		s.name,
+		s.address,
+		s.gender
+	from
+		student s
+	join class c ON s.USN=c.USN
+	join semsec ss ON c.SSID=ss.SSID
+	where
+		ss.sem='4' and ss.sec='c';
+
+
+CREATE VIEW CustomerView AS
+    	SELECT CustomerID, CustomerName, City, Gender, Grade, SalesmanID
+    	FROM Customer
+    	WHERE City = "Batticaloa" OR Grade > 100;
+
+CREATE VIEW SalesmenCommissionRange AS
+    	SELECT * FROM Salesman
+    	WHERE Commission BETWEEN 14 AND 16;
+-----------------------------------------------------------------------------------------
+
+*Write the procedure to increase the Marks by 2 and insert it in to new_Mark column.*
+delimiter || 
+	create procedure proc3(in Mar int) 
+	begin
+	select StuName,Marks+Mar as New_Marks from Student; 
+	end || 
+delimiter ; 
+call proc3(2); 
+
+*Write the procedure to insert the new value into student table *
+delimiter || 
+	create procedure proc4(in Nam varchar(20),in Mar int)
+	begin 
+	insert into Student values(Nam,Mar); 
+	end || 
+delimiter ; 
+call proc4('Gopi',80); 
+
+
+*Write the procedure to count the Number of students in the student table. *
+delimiter || 
+	create procedure proc6(out p1 int)
+	begin 
+	select count(StuName) into p1 from Student; 
+	end || 
+delimiter ; 
+call proc6(@No_of_Students); 
+select @No_of_Students;
+
+*Write the procedure to view  the Marks of <anyname>*
+delimiter || 
+	create procedure proc7(in nam varchar(20),out mar int) 
+	begin
+	select Marks into mar from Student where StuName=nam; 
+	end || 
+delimiter ; 
+call proc7('Mathu',@Marks); 
+select @Marks; 
+
+------------------------------------------------------------------------------------
+
+*Male/Female--->Mr/Mrs*
+DELIMITER || 
+	create trigger prefix_customer_name
+    	BEFORE INSERT ON Customer
+    	FOR EACH ROW
+    	BEGIN
+     	IF NEW.Gender = "Male" THEN
+     		SET NEW.CustomerName = CONCAT("Mr. ", NEW.CustomerName);
+     	ELSE
+     		SET NEW.CustomerName = CONCAT("Ms. ", NEW.CustomerName);
+     	END IF;
+     END ||
+DELIMITER ;
+
+
+*Date change*
+DELIMITER ||
+CREATE TRIGGER OrderDateCheck
+   	BEFORE INSERT ON OrderBy
+    	FOR EACH ROW
+    	BEGIN 
+    	IF NEW.OrderDate <= CURDATE() THEN
+    		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = "Order date must be greater than the current date";
+    	END IF;
+   END ||
+DELIMITER ;
+
+insert into OrderBy(OrderNo, PurchaseAmount, OrderDate)
+    	VALUES ("wr32w", 12000, "2025-01-01");
+
+*Valdate ID*
+DELIMITER || 
+CREATE TRIGGER ValidateCustomerID 
+    	BEFORE INSERT ON Customer
+    	FOR EACH ROW
+    	BEGIN
+     	IF NEW.CustomerID NOT LIKE "C____" THEN
+     		SET NEW.CustomerID = CONCAT('C', LPAD(SUBSTRING(NEW.CustomerID, 2), 4, '0'));
+     	END IF;
+     END ||
+DELIMITER ;
+
+insert into Customer(CustomerID, CustomerName, Gender, City, Grade, SalesmanID) VALUES
+    ("C06", "Jack Wilson", "Male", "Batticaloa", 2, "S04");
+
+*Insert*
+delimiter //
+create trigger calc
+    	before insert on marks
+    	for each row
+    	begin
+    	set new.final = (new.test1 + new.test2 + new.test3 - least(new.test1, new.test2, new.test3))/2;
+    	end //
+delimiter ;
+
+
+*Backup*
+*create Backup table
+create table OrderBy_Backup(
+    	OrderNo varchar(30) NOT NULL PRIMARY KEY,
+    	PurchaseAmount decimal(10,2),
+    	OrderDate Date,
+    	CustomerID varchar(30),
+    	SalesmanID varchar(30),
+    	Date datetime,
+    	FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    	FOREIGN KEY(SalesmanID) REFERENCES Salesman(SalesmanID)	
+	);
+
+*Backup
+DELIMITER ||
+CREATE TRIGGER OrderByUpdateBackup
+    	BEFORE UPDATE ON OrderBy
+    	FOR EACH ROW
+    	BEGIN
+    	INSERT INTO OrderBy_Backup(OrderNo, PurchaseAmount, OrderDate, CustomerID, SalesmanID, Date)
+    	VALUES (OLD.OrderNo, OLD.PurchaseAmount, OLD.OrderDate, OLD.CustomerID, OLD.SalesmanID, NOW());
+    	END ||
+DELIMITER ;
+
+Update OrderBy
+    SET PurchaseAmount = 13000
+    WHERE OrderNo = "O102";
+
+*delete marks -> Old table
+
+delimiter //
+create trigger deletemarks
+    	after delete on marks
+   	for each row
+    	begin
+    	insert into old_marks (USN, Subcode, SSID, test1, test2, test3, final)
+    	values(old.USN, old.Subcode, old.SSID, old.test1, old.test2, old.test3, old.final);
+    	end //
+delimiter ;
+
+delete from marks
+    	where Subcode = '10CS81';
+    	
