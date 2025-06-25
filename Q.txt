@@ -1,0 +1,92 @@
+What is the mode when you log in to the “Command Line Interface” in a CISCO router?
+	• User EXEC Mode.
+	Prompt: Router>
+	Limited commands available (e.g., ping, show).
+
+
+Which mode do you need to use, to access all commands?
+	• Privileged EXEC Mode to access all commands.
+	Prompt: Router#
+	Access commands like show, debug, and enter configuration mode.
+
+
+How to switch from Global Configuration Mode to Privileged EXEC Mode?
+	• Router(config)#
+	  Exit
+	  Router#
+
+
+What is the command to show the important status information of the router?
+	• show version
+	This displays system info like: IOS version, Router uptime, Configuration register, Interfaces
+
+
+How do you clear the counters or interface of the router?
+	• Use command:  clear counters [interface-id]
+	Eg -: 	To clear counters on interface GigabitEthernet0/0:
+		clear counters GigabitEthernet0/0
+
+
+How do you exit from Global Configuration Mode?
+	• Use command : exit
+
+
+List at least two methods to exit from Privileged EXEC Mode.
+	• Type disable – returns to User EXEC Mode.
+	• Type logout or exit – logs you out of the session completely.
+
+
+How do you get a brief description of the help system in any command mode?
+	• Use command: ?
+	Eg -: 	Router# ?  (Shows available commands in the current mode)
+
+
+What is the command to name the router? Explain your answer with an example.
+	• hostname [name]
+	Eg -:	Router(config)# hostname MyRouter
+		MyRouter(config)#
+		(This changes the router’s prompt and name to MyRouter)
+
+
+How do you set an encrypted password to the router?
+	• To set an encrypted password for privileged EXEC mode:
+	1.Enter global configuration mode:
+		configure terminal / conf t
+	2.Use the command:
+		enable secret [password]
+		Eg -: Router(config)# enable secret cisco123
+
+
+How to Exit All the Way Back to Privileged EXEC Mode (From Any Config Mode)?
+	• Use command : end (Immediately exits to Privileged EXEC mode (Switch#) )
+	• Ctrl + Z (Keyboard shortcut that does the same as end)
+
+
+How do you display the default VLAN configuration on the switch?
+	• Use command : show vlan brief	(In Privileged EXEC mode)
+		Eg -:	Switch>enable
+			Switch#show vlan brief
+
+			VLAN Name                             Status    Ports
+			---- -------------------------------- --------- -------------------------------
+			1    default                          active    Fa0/3, Fa0/4, Fa0/5, Fa0/6
+                                             		   		Fa0/7, Fa0/8, Fa0/9, Fa0/10
+                                                			Fa0/11, Fa0/12, Fa0/13, Fa0/14
+                                                			Fa0/15, Fa0/16, Fa0/17, Fa0/18
+                                                			Fa0/19, Fa0/20, Fa0/21, Fa0/22
+                                                			Fa0/23, Fa0/24
+			1002 fddi-default                     active    
+			1003 token-ring-default               active    
+			1004 fddinet-default                  active    
+			1005 trnet-default                    active  
+
+
+
+| **Class** | **First Octet Range** | **IP Address Range (Decimal)** | **Default Subnet Mask** | **Purpose**           |
+| --------- | --------------------- | ------------------------------ | ----------------------- | --------------------- |
+| A         | 1 – 126               | 1.0.0.0 – 126.255.255.255      | 255.0.0.0 (/8)          | Large networks        |
+| B         | 128 – 191             | 128.0.0.0 – 191.255.255.255    | 255.255.0.0 (/16)       | Medium networks       |
+| C         | 192 – 223             | 192.0.0.0 – 223.255.255.255    | 255.255.255.0 (/24)     | Small networks        |
+| D         | 224 – 239             | 224.0.0.0 – 239.255.255.255    | N/A                     | Multicast             |
+| E         | 240 – 255             | 240.0.0.0 – 255.255.255.255    | N/A                     | Experimental/Research |
+

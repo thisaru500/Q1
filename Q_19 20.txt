@@ -1,0 +1,84 @@
+An ISP is granted the block 80.70.56.0/21. The ISP needs to allocate addresses for two organizations each with 500 addresses, 
+two organizations each with 250 addresses, and three organizations each with 50 addresses.
+
+a) Find the number and range of addresses in the ISP block.
+b) Find the range of addresses for each organization and the range of unallocated addresses.
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+ISP block: 80.70.56.0/21
+
+Organizations need:
+2 orgs with 500 addresses each
+2 orgs with 250 addresses each
+3 orgs with 50 addresses each
+
+(a) Find the number and range of addresses in the ISP block
+
+Number of addresses in the block(/21) = 2^host bits = 2^11 = 2048 addresses
+
+Range of addresses in the block
+	Start: 80.70.56.0
+	End: 80.70.63.255 (since 80.70.56.0 + 2048 - 1 = 80.70.63.255)
+
+Answer (a): 
+Number of addresses: 2048 
+Range: 80.70.56.0 – 80.70.63.255
+
+
+(b) Allocate ranges to each organization and show unallocated space
+We will allocate subnets based on the closest power of 2 ≥ required hosts.
+
+Subnet Size Requirements:
+Org Type	Needed	Useable Size
+2 orgs × 500	500	   512	
+2 orgs × 250	250	   256	
+3 orgs × 50	50	   64	
+
+Step-by-step allocation from 80.70.56.0
+🔹 Each org need atleast 512 address block(2^9) -> host bits = 9 -> network bits = 23 -> Two /23 blocks
+	Org A: 80.70.56.0/23 → 512 addresses
+	Range: 80.70.56.0 – 80.70.57.255
+
+	Org B: 80.70.58.0/23 → 512 addresses
+	Range: 80.70.58.0 – 80.70.59.255
+
+🔹 Each org need atleast 256 address block(2^8) -> host bits = 8 -> network bits = 24 -> Two /24 blocks
+	Org C: 80.70.60.0/24 → 256 addresses
+	Range: 80.70.60.0 – 80.70.60.255
+
+	Org D: 80.70.61.0/24 → 256 addresses
+	Range: 80.70.61.0 – 80.70.61.255
+
+🔹 Each org need atleast 64 address block(2^6) -> host bits = 6 -> network bits = 26 -> Three /26 blocks
+	Org E: 80.70.62.0/26 → 64 addresses
+	Range: 80.70.62.0 – 80.70.62.63
+
+	Org F: 80.70.62.64/26 → 64 addresses
+	Range: 80.70.62.64 – 80.70.62.127
+
+	Org G: 80.70.62.128/26 → 64 addresses
+	Range: 80.70.62.128 – 80.70.62.191
+
+
+Remaining (Unallocated) Address Range:
+	Last used: 80.70.62.191
+	End of block: 80.70.63.255
+
+	Unallocated range:
+		80.70.62.192 – 80.70.63.255 = 320 addresses
+
+Final Answer (b):
+Allocated Address Ranges:
+Organization	Subnet	Address Range
+Org A	80.70.56.0/23	80.70.56.0 – 80.70.57.255
+Org B	80.70.58.0/23	80.70.58.0 – 80.70.59.255
+Org C	80.70.60.0/24	80.70.60.0 – 80.70.60.255
+Org D	80.70.61.0/24	80.70.61.0 – 80.70.61.255
+Org E	80.70.62.0/26	80.70.62.0 – 80.70.62.63
+Org F	80.70.62.64/26	80.70.62.64 – 80.70.62.127
+Org G	80.70.62.128/26	80.70.62.128 – 80.70.62.191
+
+Unallocated Range:
+80.70.62.192 – 80.70.63.255 (320 addresses)

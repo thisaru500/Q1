@@ -1,0 +1,35 @@
+Switch>enable						[enter privileged EXEC mode]
+Switch#conf t						[enter global configuration mode]
+Switch(config)#hostname LOCAL-SWITCH			[rename the switch as "LOCAL-SWITCH"]
+LOCAL-SWITCH(config)#enable secret cisco		[configure the password as "cisco"]
+LOCAL-SWITCH(config)#service password-encryption	[configure password encryption]
+
+----------------------------------------- Configure CONSOLE access ----------------------------------------------------------
+
+LOCAL-SWITCH(config)# line console 0			[enter Line configuration mode]
+LOCAL-SWITCH(config-line)# password ciscoconsole	[set console access password as "ciscoconsole"]
+LOCAL-SWITCH(config-line)# logging synchronous		[prevent system messages from interrupting your command line while you’re typing]
+LOCAL-SWITCH(config-line)# login			[enable password checking on console]
+LOCAL-SWITCH(config-line)# history size 15		[device will remember the last 15 commands you typed]
+LOCAL-SWITCH(config-line)# exec-timeout 6 45		[If don’t type anything for that long, the session will automatically log out]
+LOCAL-SWITCH(config-line)# exit
+
+
+
+ • Main command modes for the switch:
+ 	User EXEC		- press enter
+ 	Privileged EXEC		- enable
+ 	Global configuration	- configure terminal / config t
+ 	Interface configuration - interface FastEthernet0/1 / int fa0/1
+ 	VLAN configuration	- vlan 10
+ 	Line configuration	- line console 0
+
+
+Notes: 
+	• User EXEC mode has limited privileges; it’s mostly for viewing settings. 
+	• Privileged EXEC mode (also called "enable mode") allows full read and limited write access. 
+	• Global Configuration mode is used for configuring general settings. 
+	• Interface Configuration mode is used to configure individual interfaces. 
+	• Line Configuration mode is for configuring terminal lines (e.g., console, SSH, telnet). 
+	• VLAN Configuration mode is used to configure VLAN-specific 
+
